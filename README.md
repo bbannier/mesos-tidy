@@ -1,28 +1,22 @@
-clang-tidy docker images for Mesos
-==================================
+clang-tidy docker image for Mesos
+=================================
 
-This repository contains docker images in order to run clang-tidy
+This repository contains a docker image to run clang-tidy
 checks over a Mesos repository. It uses a [version of
 clang-tidy](https://github.com/mesos/clang-tools-extra/tree/mesos_38)
 augmented with Mesos-specific checks.
 
 
-Building the docker images
---------------------------
+Building the docker image
+-------------------------
 
-We use two docker images to perform the checks, one containing
-clang-tidy, and second one containing tooling to extract a clang
-compilation database and invoke `clang-tidy` on all Mesos source files
-which are part of the build. The images are Debian-based and use GCC
-to perform the build.
+To building the image involves compiling a Mesos-flavored version of
+`clang-tidy`, installing Mesos dependencies, and installation of tools
+to drive check invocations.
 
-The clang-tidy image can be built with
+The image can be built with
 
-    $ docker build -t mesos/clang-tidy -f clang-tidy.Dockerfile .
-
-For the Mesos-tidy use
-
-    $ docker build -t mesos/tidy -f mesos-tidy.Dockerfile .
+    $ docker build -t mesos-tidy .
 
 
 Running checks
@@ -48,3 +42,5 @@ without arguments.
 Optionally, the set of checks to perform can be specified in a
 clang-tidy check regex. By default, only Mesos-specific checks will be
 performed, i.e., the default value for `CHECKS` is `-*,mesos-*`.
+
+Results from 3rdparty dependencies are filtered from the result set.

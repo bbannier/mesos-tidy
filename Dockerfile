@@ -25,7 +25,7 @@ RUN git clone --depth 1 -b mesos_38   http://github.com/mesos/clang-tools-extra.
 RUN rm ~/.gitconfig
 
 RUN cmake /tmp/llvm -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/
-RUN make install
+RUN make -j`nproc` install
 
 WORKDIR /
 RUN rm -rf /tmp/llvm

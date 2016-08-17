@@ -57,8 +57,6 @@ RUN apt-get install -qy \
 RUN apt-get install -qy \
   parallel
 
-VOLUME ["/SRC"]
-
 # Wire up the script which performs the actual work.
 WORKDIR /BUILD
 ADD ["entrypoint.sh", "entrypoint.sh"]

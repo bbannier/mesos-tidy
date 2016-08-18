@@ -17,24 +17,24 @@ RUN apt-get install -qy --no-install-recommends \
 
 WORKDIR /tmp/build_clang
 
-RUN git clone --depth 1 -b release_38 http://llvm.org/git/llvm /tmp/llvm
-RUN git clone --depth 1 -b release_38 http://llvm.org/git/clang /tmp/llvm/tools/clang
-
-RUN git config --global http.sslVerify false
-RUN git clone --depth 1 -b mesos_38   http://github.com/mesos/clang-tools-extra.git /tmp/llvm/tools/clang/tools/extra
-RUN rm ~/.gitconfig
-
-RUN cmake /tmp/llvm -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/
-RUN make -j`nproc` install
-
-WORKDIR /
-RUN rm -rf /tmp/llvm
-RUN rm -rf /tmp/build_clang
+RUN \
+  git clone --depth 1 -b release_38 http://llvm.org/git/llvm /tmp/llvm && \
+  git clone --depth 1 -b release_38 http://llvm.org/git/clang /tmp/llvm/tools/clang && \
+  \
+  git config --global http.sslVerify false && \
+  git clone --depth 1 -b mesos_38   http://github.com/mesos/clang-tools-extra.git /tmp/llvm/tools/clang/tools/extra && \
+  rm ~/.gitconfig && \
+  \
+  cmake /tmp/llvm -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/ && \
+  make -j`nproc` install && \
+  \
+  cd / && \
+  rm -rf /tmp/llvm && \
+  rm -rf /tmp/build_clang
 
 ENV PATH /opt/bin:$PATH
 
 # Install Mesos dependencies
-RUN apt-get update
 RUN apt-get install -qy \
   autoconf \
   bear \
